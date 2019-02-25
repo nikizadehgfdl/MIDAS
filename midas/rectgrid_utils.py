@@ -41,8 +41,8 @@ def min_resolution(grid=None,x=None,y=None):
       dy = y-numpy.roll(y,1)
       return None,numpy.min(dy[1:])
   else:
-    print """
-      Either x or y or grid must exist in call to min_resolution"""
+    print ("""
+      Either x or y or grid must exist in call to min_resolution""")
     raise
 
 def max_resolution(grid=None,x=None,y=None):
@@ -69,8 +69,8 @@ def max_resolution(grid=None,x=None,y=None):
       dy = y-numpy.roll(y,1)
       return None,numpy.max(dy[1:])
   else:
-    print """
-      Either x or y or grid must exist in call to min_resolution"""
+    print ("""
+      Either x or y or grid must exist in call to min_resolution""")
     raise
     
   
@@ -143,8 +143,8 @@ def spherical_dist_latlon(x1,y1,x2,y2,metric):
     elif x1-x2 != 0.:
         dist = metric*numpy.cos(y1*PI_180)*numpy.abs(x1-x2)
     else:
-        print """
-          This is not a spherical grid"""
+        print ("""
+          This is not a spherical grid""")
         raise
     
     return dist
@@ -156,7 +156,7 @@ def mdist(x1,x2):
   >>> import rectgrid_utils
   >>> x1=0.0;x2=730.
   >>> d=rectgrid_utils.mdist(x1,x2)
-  >>> print d
+  >>print d
   10.0
   """
 

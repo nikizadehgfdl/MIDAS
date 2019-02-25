@@ -26,17 +26,17 @@
 """
 
 
-import profiles 
-import wright_eos
-import utils
-import rectgrid
-import rectgrid_gen
-import rectgrid_utils
+#import profiles 
+#import wright_eos
+#import utils
+#import rectgrid
+#import rectgrid_gen
+#import rectgrid_utils
 
 
 
 # end optional packages
 
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
+#if __name__ == "__main__":
+#    import doctest
+#    doctest.testmod()

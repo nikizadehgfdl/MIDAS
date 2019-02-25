@@ -16,7 +16,7 @@
 import copy
 import netCDF4
 import numpy
-from rectgrid_utils import *
+from .rectgrid_utils import *
 
 PI_180 = numpy.pi/180.
 
@@ -110,14 +110,14 @@ class supergrid(object):
 
           if displace_pole:
             r,phi = self.displaced_pole(r0_pole,lon0_pole,excluded_fraction=doughnut)
-            print 'phi.shape=',phi.shape
-            print 'r.shape=',r.shape
+            print ('phi.shape=',phi.shape)
+            print ('r.shape=',r.shape)
             self.x=phi.copy()
 #            self.x[:-1,-1]=self.x[:-1,-1]+360.
             self.y=r.copy()
             self.grid_x = self.x[-1,:]
 #            self.grid_x[-1]=self.grid_x[-1]+360.0
-            self.grid_y=self.y[:,nxtot/4]
+            self.grid_y=self.y[:,nxtot//4]
             vdict['nxtot']=self.grid_x.shape[0]-1
             vdict['nytot']=self.grid_y.shape[0]-1
 
@@ -144,7 +144,7 @@ class supergrid(object):
 
         else:
 
-          print """ Both xdat,ydat need to be defined if one is"""
+          print (""" Both xdat,ydat need to be defined if one is""")
           return None
 
       vdict={}
@@ -214,8 +214,8 @@ class supergrid(object):
         self.y=lat
       if displace_pole:
         r,phi = self.displaced_pole(r0_pole,lon0_pole,excluded_fraction=doughnut)
-        print 'phi.shape=',phi.shape
-        print 'r.shape=',r.shape
+        print ('phi.shape=',phi.shape)
+        print ('r.shape=',r.shape)
         self.x=phi.copy()
         self.y=r.copy()
         self.grid_x = self.x[-1,:]
@@ -386,8 +386,8 @@ class supergrid(object):
       fnbot=self.Int_dj_dy(ybot) - fnval
 
       if numpy.logical_and(itt > 50,fnbot>0.0):
-        print """
-              Unable to find bottom bound for grid function"""
+        print ("""
+              Unable to find bottom bound for grid function""")
         raise
 
     if y+2.0*self.dy_dj(y) < 0.5*(y+ymax):
@@ -406,8 +406,8 @@ class supergrid(object):
       fntop=self.Int_dj_dy(ytop)-fnval
 
       if numpy.logical_and(itt>50,fntop<0.0):
-        print """
-              Unable to find top bound for grid function"""
+        print ("""
+              Unable to find top bound for grid function""")
         raise
 
     for itt in numpy.arange(10):
@@ -456,8 +456,8 @@ class supergrid(object):
     lam = 0.5*numpy.pi - chi
 
     nxtot=self.dict['nxtot']
-    lam[:,:nxtot/2]=lam[:,:nxtot/2]-numpy.pi/2
-    lam[:,nxtot/2:]=numpy.pi/2-lam[:,nxtot/2:]
+    lam[:,:nxtot//2]=lam[:,:nxtot//2]-numpy.pi/2
+    lam[:,nxtot//2:]=numpy.pi/2-lam[:,nxtot//2:]
 
     return lam
 
@@ -476,13 +476,13 @@ class supergrid(object):
     lat=90.-lat
     lon=gamma/PI_180
 
-    lon[:,:nxtot/4]=-lon[:,:nxtot/4]
-    lon[:,nxtot/4]=90.0
-    lon[:,nxtot/4+1:nxtot/2]=180.0-lon[:,nxtot/4+1:nxtot/2]
-    lon[:,nxtot/2]=180.
-    lon[:,nxtot/2+1:3*nxtot/4]=180.0-lon[:,nxtot/2+1:3*nxtot/4]
-    lon[:,3*nxtot/4]=270.
-    lon[:,3*nxtot/4+1:]=360.-lon[:,3*nxtot/4+1:]
+    lon[:,:nxtot//4]=-lon[:,:nxtot//4]
+    lon[:,nxtot//4]=90.0
+    lon[:,nxtot//4+1:nxtot//2]=180.0-lon[:,nxtot//4+1:nxtot//2]
+    lon[:,nxtot//2]=180.
+    lon[:,nxtot//2+1:3*nxtot//4]=180.0-lon[:,nxtot//2+1:3*nxtot//4]
+    lon[:,3*nxtot//4]=270.
+    lon[:,3*nxtot//4+1:]=360.-lon[:,3*nxtot//4+1:]
 
     lon=lon+self.lon_bpnp
 
@@ -509,22 +509,22 @@ class supergrid(object):
       radius = 90.+self.grid_y[-1]
       r=(90.0+self.y)/radius
       if verbose:
-        print 'ending latitude = ',self.grid_y[-1]
+        print ('ending latitude = ',self.grid_y[-1]      )
     else:  # Did not test this option yet (probably does not work)
       radius = 90.-self.grid_y[0]
       r=(90.0-self.y)/radius
       if verbose:
-        print 'ending latitude = ',self.grid_y[0]
-
+        print ('ending latitude = ',self.grid_y[0])
+      
     ra=ra2
 
     if verbose:
-      print 'applying a conformal remapping of the pole, original  radius = ',radius, ' degrees'
-      print 'displaced pole location (relative to unit sphere) = ',ra
-      print 'displaced pole angle ( clockwise degrees relative to Greenwich) = ', -phia+180.
+      print ('applying a conformal remapping of the pole, original  radius = ',radius, ' degrees')
+      print ('displaced pole location (relative to unit sphere) = ',ra)
+      print ('displaced pole angle ( clockwise degrees relative to Greenwich) = ', -phia+180.)
 
       if excluded_fraction is not None:
-        print 'excluding inner ',excluded_fraction*100.,' percent of the grid'
+        print ('excluding inner ',excluded_fraction*100.,' percent of the grid')
 
     a=numpy.complex(ra2*numpy.cos(PI_180*-phia),ra2*numpy.sin(PI_180*-phia))
 
@@ -643,7 +643,8 @@ class supergrid(object):
       if pole == -1:
         jmin=numpy.ceil(ny*excluded_fraction)
         jmin=jmin+numpy.mod(jmin,2)
-        return r_out[jmin:,:], phi_out[jmin:,:]
+        jmint = int(jmin)
+        return r_out[jmint:,:], phi_out[jmint:,:]
       else:
         jmax=numpy.ceil(ny*(1.0 - excluded_fraction))
         return r_out[:jmax,:], phi_out[:jmax,:]
@@ -659,8 +660,8 @@ class supergrid(object):
 
 
     if verbose:
-      print 'Truncating grid at latitudes= ',y_bnds[0],y_bnds[1]
-      print 'Truncating grid at y indices= ',y0,y1
+      print ('Truncating grid at latitudes= ',y_bnds[0],y_bnds[1])
+      print ('Truncating grid at y indices= ',y0,y1)
 
 
 
@@ -753,7 +754,7 @@ class supergrid(object):
     if field in f.variables:
       self.mask = f.variables[field][:]
     else:
-      print ' Field ',field,' is not present in file ',path
+      print (' Field ',field,' is not present in file ',path)
       return None
 
 
@@ -766,7 +767,7 @@ class supergrid(object):
       grid=copy.copy(self)
       return grid
     else:
-      print """Supergrid extraction not supported yet """
+      print ("""Supergrid extraction not supported yet """)
       return None
 
   def write_nc(self,fnam=None,format='NETCDF3_CLASSIC'):
